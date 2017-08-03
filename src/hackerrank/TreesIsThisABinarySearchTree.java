@@ -1,5 +1,10 @@
 package hackerrank;
 
+/**
+ * https://www.hackerrank.com/challenges/ctci-is-binary-search-tree
+ * @author Mark Chmilar
+ *
+ */
 public class TreesIsThisABinarySearchTree {
 
     boolean checkBST(Node root) {
