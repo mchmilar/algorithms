@@ -15,7 +15,7 @@ public class ArraysLeftRotation {
         int d = in.nextInt();
         int a[] = new int[l];
         for(int a_i=0; a_i < l; a_i++){
-            int newIndex = (a_i + l - d) % l;
+            int newIndex = (a_i + l - (d % l)) % l;
             a[newIndex] = in.nextInt();
         }
         for (int i = 0; i < l; i++) {
