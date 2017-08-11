@@ -10,7 +10,7 @@ public class StringFunctionCalculation {
         String[] suffixes = suffix(t);
         int result = 0;
         for (int i = 0; i < t.length(); i++) {
-            for (int j = i + 1; j < t.length(); j++) {
+            for (int j = i + 1; j <= t.length(); j++) {
                 String ss = t.substring(i, j);
                 int count = search(ss, suffixes);
                 if (count * ss.length() > result)
@@ -22,12 +22,26 @@ public class StringFunctionCalculation {
     }
     
     static int search(String s, String[] suffixes) {
-        int l = 0, r = s.length();
+        int l = 0, r = suffixes.length;
         while (l < r) {
             int mid = (l + r) / 2;
             if (s.compareTo(suffixes[mid]) > 0)
+                l = mid + 1;
+            else
                 r = mid;
         }
+        int start = l;
+        r = suffixes.length;
+        while (l < r) {
+            int mid = (l + r) / 2;
+            int safeLength = Math.min(s.length(), suffixes[mid].length());
+            String suffix = suffixes[mid].substring(0, safeLength);
+            if (s.compareTo(suffix) < 0)
+                r = mid;
+            else
+                l = mid + 1;
+        }
+        return l - start;
     }
     
     
