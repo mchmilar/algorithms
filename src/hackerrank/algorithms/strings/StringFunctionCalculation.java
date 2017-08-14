@@ -10,18 +10,23 @@ public class StringFunctionCalculation {
         String[] suffixes = suffix(t);
         int[] lcp = lcp(suffixes);
         int result = 0;
-        Map<String, Integer> memo = new HashMap<>();
+        HashMap<String, Integer> memo = new HashMap<>();
         for (int i = 0; i < t.length(); i++) {
             for (int j = i + 1; j <= t.length(); j++) {
-                String ss = t.substring(i, j);
+                System.out.println(j - i);
                 int count = 0;
-                Integer memoInt = memo.get(ss);
-                if (memoInt == null)
-                    count = search(ss, suffixes, lcp);
-                else
-                    count = memoInt.intValue();
-                if (count == 0)
+                if (memo.get(ss) == null) {
+                    count = search(t, i, j, suffixes, lcp);
+                    memo.put(ss, count);
+                } else {
+                    count = memo.get(ss);
+                }
+
+                if (count == 1) {
+                    if (t.length() - i > result)
+                        result = t.length() - i;
                     break;
+                }
                 if (count * ss.length() > result)
                     result = count * ss.length();
             }
@@ -47,12 +52,20 @@ public class StringFunctionCalculation {
         }
         return lcp;
     }
+
+    static int myCompareTo(String string, int i, int j, String suffix) {
+        while (i <= j) {
+            if (string.charAt(i) < suffix.charAt(i))
+                return -1;
+            if ()
+        }
+    }
     
-    static int search(String s, String[] suffixes, int[] lcp) {
+    static int search(String string, int start, int end, String[] suffixes, int[] lcp) {
         int l = 0, r = suffixes.length;
         while (l < r) {
             int mid = (l + r) / 2;
-            if (s.compareTo(suffixes[mid]) > 0)
+            if (string.myCompareTo(suffixes[mid]) > 0)
                 l = mid + 1;
             else
                 r = mid;
@@ -61,7 +74,7 @@ public class StringFunctionCalculation {
         l++;
         r = suffixes.length;
         while (l < r) {
-            if (lcp[l] >= s.length())
+            if (lcp[l] >= substring.length())
                 l++;
             else
                 break;
@@ -74,7 +87,7 @@ public class StringFunctionCalculation {
     static String[] suffix(String t) {
         String[] s = new String[t.length()];
         for (int i = 0; i < t.length(); i++) {
-            System.out.println(i);
+            //System.out.println(i);
             s[i] = t.substring(i);
         }
         Arrays.sort(s);
