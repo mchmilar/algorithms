@@ -14,21 +14,14 @@ public class StringFunctionCalculation {
         for (int i = 0; i < t.length(); i++) {
             for (int j = i + 1; j <= t.length(); j++) {
                 System.out.println(j - i);
-                int count = 0;
-                if (memo.get(ss) == null) {
-                    count = search(t, i, j, suffixes, lcp);
-                    memo.put(ss, count);
-                } else {
-                    count = memo.get(ss);
-                }
-
+                int count = search(t, i, j, suffixes, lcp);
                 if (count == 1) {
                     if (t.length() - i > result)
                         result = t.length() - i;
                     break;
                 }
-                if (count * ss.length() > result)
-                    result = count * ss.length();
+                if (count * (j - i) > result)
+                    result = count * (j - i);
             }
         }
         return result;
@@ -53,19 +46,20 @@ public class StringFunctionCalculation {
         return lcp;
     }
 
-    static int myCompareTo(String string, int i, int j, String suffix) {
-        while (i <= j) {
-            if (string.charAt(i) < suffix.charAt(i))
-                return -1;
-            if ()
+    static int myCompareTo(String string, int start, int end, String suffix) {
+        int n = Math.min(end-start, suffix.length());
+        for (int i = 0; i < n; i++) {
+            if (string.charAt(i+start) < suffix.charAt(i)) return -1;
+            if (string.charAt(i+start) > suffix.charAt(i)) return +1;
         }
+        return (end - start) - suffix.length();
     }
     
-    static int search(String string, int start, int end, String[] suffixes, int[] lcp) {
+    static int search(String string, int begin, int end, String[] suffixes, int[] lcp) {
         int l = 0, r = suffixes.length;
         while (l < r) {
             int mid = (l + r) / 2;
-            if (string.myCompareTo(suffixes[mid]) > 0)
+            if (myCompareTo(string, begin, end, suffixes[mid]) > 0)
                 l = mid + 1;
             else
                 r = mid;
@@ -74,7 +68,7 @@ public class StringFunctionCalculation {
         l++;
         r = suffixes.length;
         while (l < r) {
-            if (lcp[l] >= substring.length())
+            if (lcp[l] >= (end - begin))
                 l++;
             else
                 break;
